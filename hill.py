@@ -1,11 +1,16 @@
 import random
 import string
+import tqdm
 
-def generate_random_solution(length=13):
-    return[random.choice(string.printable) for _ in range(length)]
+sentence = "Flavien Vidal"
+
+
+def generate_random_solution(length=len(sentence)):
+    return [random.choice(string.printable) for _ in range(length)]
+
 
 def evaluate(solution):
-    target = list("Hello World!")
+    target = list(sentence)
     diff = 0
     for i in range(len(target)):
         s = solution[i]
@@ -13,19 +18,21 @@ def evaluate(solution):
         diff += abs(ord(s) - ord(t))
     return diff
 
+
 def mutate(solution):
     index = random.randint(0, len(solution) - 1)
     solution[index] = random.choice(string.printable)
+
 
 best = generate_random_solution()
 best_score = evaluate(best)
 
 while True:
-    print("Best score so far: ", best_score, "and solution: ", "".join(best))
+    print("Score: ", best_score, " | Solution: ", "".join(best))
 
     if best_score == 0:
         break
-    
+
     new_solution = list(best)
     mutate_solution = mutate(new_solution)
 
@@ -33,7 +40,3 @@ while True:
     if evaluate(new_solution) < best_score:
         best = new_solution
         best_score = score
-
-
-
-
